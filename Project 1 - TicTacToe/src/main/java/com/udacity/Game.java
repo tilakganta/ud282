@@ -69,14 +69,14 @@ public class Game {
      * @return boolean: true if play was successful, false if invalid play
      */
     public boolean playAt(int i, int j){
-        //check for index boundries
+        //check for index boundaries
         if(i>=3||j>=3||i<0||j<0)
             return false;
         //check if this position is available
         if(grid[i][j] != '-'){
             return false; //bail out if not available
         }
-        //update grid with new play based on who's turn it is
+        //update grid with new play based on whose turn it is
         grid[i][j] = turn;
         //update free spots
         freeSpots--;
@@ -93,7 +93,7 @@ public class Game {
     }
 
     /**
-     * Performs the winner chack and displayes a message if game is over
+     * Performs the winner check and displays a message if game is over
      * @return true if game is over to start a new game
      */
     public boolean doChecks() {
@@ -136,7 +136,6 @@ public class Game {
                 turn = 'x';
             }
         }
-        return;
     }
 
 
@@ -151,6 +150,47 @@ public class Game {
     public String checkGameWinner(char [][]grid){
         String result = "None";
         //Student code goes here ...
+        String diagonal1;
+        diagonal1 = new StringBuilder().append(grid[2][0]).append(grid[1][1]).append(grid[0][2]).toString();
+        String diagonal2;
+        diagonal2 = new StringBuilder().append(grid[0][0]).append(grid[1][1]).append(grid[2][2]).toString();;
+        System.out.println("diagonal1 "+diagonal1);
+        System.out.println("diagonal2 "+diagonal2);
+        if(diagonal1.equals("xxx") || diagonal2.equals("xxx")){
+            return "X wins";
+        } else if(diagonal1.equals("ooo") || diagonal2.equals("ooo")){
+            return "O wins";
+        }
+        StringBuilder tie = new StringBuilder();
+        for(int i=0;i<3;i++){
+            StringBuilder pattern1 = new StringBuilder();
+            for(int j=0;j<3;j++){
+                pattern1.append(grid[i][j]);
+                tie.append(grid[j][i]);
+            }
+            if(pattern1.toString().equals("xxx")){
+                return ("X wins");
+            }
+            if (pattern1.toString().equals("ooo")) {
+                return ("O wins");
+            }
+        }
+        for(int i=0;i<3;i++){
+            StringBuilder pattern2 = new StringBuilder();
+            for(int j=0;j<3;j++){
+                pattern2.append(grid[j][i]);
+            }
+            if(pattern2.toString().equals("xxx")){
+                return ("X wins");
+            }
+            if (pattern2.toString().equals("ooo")) {
+                return ("O wins");
+            }
+        }
+        System.out.println("Tie"+tie);
+        if (!tie.toString().contains("-")) {
+            return ("Tie");
+        }
         return result;
     }
 
@@ -158,7 +198,7 @@ public class Game {
      * Main function
      * @param args command line arguments
      */
-    public static void main(String args[]){
+    public static void main(String[] args){
         Game game = new Game();
         gui = new GameUI(game);
     }
